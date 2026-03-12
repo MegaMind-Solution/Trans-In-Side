@@ -60,35 +60,43 @@ function showSavedStatus() {
   statusTimeout = setTimeout(() => { statusEl.classList.remove('show'); }, 2000);
 }
 
-function setupDropdown(id, isSource) {
+function setupDropdown(id, isSource, customOptions = null) {
   const container = document.getElementById(id);
   const button = container.querySelector('.select-button');
   const search = container.querySelector('.search-box');
   const list = container.querySelector('.options-list');
 
-  let optionsHtml = isSource ? `<li data-val="auto">Detect Language</li>` : '';
-  languages.forEach(lang => {
-    optionsHtml += `<li data-val="${lang.code}">${lang.name}</li>`;
-  });
+  let optionsHtml = '';
+  if (customOptions) {
+    customOptions.forEach(opt => { optionsHtml += `<li data-val="${opt.val}">${opt.name}</li>`; });
+    if (search) search.style.display = 'none'; 
+  } else {
+    optionsHtml = isSource ? `<li  title="Detect Automaticly" data-val="auto">Detect Language</li>` : '';
+    languages.forEach(lang => {
+      optionsHtml += `<li  title="${lang.name}" data-val="${lang.code}">${lang.name}</li>`;
+    });
+  }
   list.innerHTML = optionsHtml;
 
   button.addEventListener('click', () => {
     document.querySelectorAll('.custom-select').forEach(el => { if (el !== container) el.classList.remove('active'); });
     container.classList.toggle('active');
-    if (container.classList.contains('active')) {
+    if (container.classList.contains('active') && search) {
       search.value = '';
       Array.from(list.children).forEach(li => li.style.display = 'block');
-      setTimeout(() => search.focus(), 100); // Focus search automatically
+      setTimeout(() => search.focus(), 100);
     }
   });
 
-  search.addEventListener('input', (e) => {
-    const term = e.target.value.toLowerCase();
-    Array.from(list.children).forEach(li => {
-      const text = li.textContent.toLowerCase();
-      li.style.display = text.includes(term) ? 'block' : 'none';
+  if (search) {
+    search.addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase();
+      Array.from(list.children).forEach(li => {
+        const text = li.textContent.toLowerCase();
+        li.style.display = text.includes(term) ? 'block' : 'none';
+      });
     });
-  });
+  }
 
   list.addEventListener('click', (e) => {
     if (e.target.tagName === 'LI') {
@@ -125,24 +133,29 @@ document.getElementById('swapLang').addEventListener('click', () => {
 });
 
 function saveSettings() {
+  const providerBtn = document.querySelector('#providerSelect .select-button');
+
   chrome.storage.sync.set({
     srcLang: document.querySelector('#srcSelect .select-button').getAttribute('data-val'),
-    targetLang: document.querySelector('#targetSelect .select-button').getAttribute('data-val')
+    targetLang: document.querySelector('#targetSelect .select-button').getAttribute('data-val'),
+    provider: providerBtn ? providerBtn.getAttribute('data-val') : 'google'
   }, () => {
     showSavedStatus();
   });
 }
 
 function loadSettings() {
-  chrome.storage.sync.get(['srcLang', 'targetLang'], (data) => {
+  chrome.storage.sync.get(['srcLang', 'targetLang', 'provider'], (data) => {
     if (data.srcLang) setDropdownValue('srcSelect', data.srcLang);
     if (data.targetLang) setDropdownValue('targetSelect', data.targetLang);
+    if (data.provider) setDropdownValue('providerSelect', data.provider);
   });
 }
 
 function setDropdownValue(containerId, value) {
   const list = document.querySelector(`#${containerId} .options-list`);
   const button = document.querySelector(`#${containerId} .select-button`);
+  if (!list || !button) return;
   const option = list.querySelector(`li[data-val="${value}"]`);
   if (option) {
     setButtonText(button, option.textContent, value);
@@ -155,6 +168,11 @@ document.addEventListener('click', (e) => {
   }
 });
 
+setupDropdown('providerSelect', false, [
+  { val: 'google', name: 'Google Translate' },
+  { val: 'deepl', name: 'DeepL' },
+  { val: 'bing', name: 'Bing Translator' }
+]);
 setupDropdown('srcSelect', true);
 setupDropdown('targetSelect', false);
 loadSettings();

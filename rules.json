@@ -33,42 +33,23 @@
     "action": {
       "type": "modifyHeaders",
       "requestHeaders": [
-        {
-          "header": "Sec-Ch-Ua-Mobile",
-          "operation": "remove"
-        },
-        {
-          "header": "Sec-Ch-Ua-Platform",
-          "operation": "remove"
-        },
-        {
-          "header": "Referer",
-          "operation": "remove"
-        },
+        { "header": "Sec-Ch-Ua-Mobile", "operation": "remove" },
+        { "header": "Sec-Ch-Ua-Platform", "operation": "remove" },
+        { "header": "Referer", "operation": "remove" },
         {
           "header": "Sec-Fetch-Site",
           "operation": "set",
           "value": "same-origin"
         },
-        {
-          "header": "Sec-Fetch-Dest",
-          "operation": "set",
-          "value": "document"
-        }
+        { "header": "Sec-Fetch-Dest", "operation": "set", "value": "document" }
       ],
       "responseHeaders": [
-        {
-          "header": "X-Frame-Options",
-          "operation": "remove"
-        },
-        {
-          "header": "Content-Security-Policy",
-          "operation": "remove"
-        }
+        { "header": "X-Frame-Options", "operation": "remove" },
+        { "header": "Content-Security-Policy", "operation": "remove" }
       ]
     },
     "condition": {
-      "regexFilter": "translate.google.com",
+      "regexFilter": "(translate\\.google\\.com|deepl\\.com|bing\\.com)",
       "resourceTypes": ["sub_frame", "xmlhttprequest"]
     }
   }
