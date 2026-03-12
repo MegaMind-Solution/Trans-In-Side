@@ -33,17 +33,9 @@ Since this is a custom Chrome Extension, you can easily install it locally in a 
 2. **Open the Side Panel**: Once configured, trigger the Chrome Side Panel (via the Chrome side panel icon or extension shortcut).
 3. **Enjoy Translating**: The translation interface will load perfectly inside the panel, respecting your exact theme and language choices.
 
-## 📂 File Structure
 
-*   `manifest.json` — Core extension configuration and permissions (`storage`, `sidePanel`).
-*   `popup.html` & `popup.js` — The modern settings menu (Theme toggle & Searchable language dropdowns).
-*   `panel.html` & `panel.js` — The main side panel view that houses the translation frame and the real-time theme listener.
+## If you enjoy using Trans-In-Side, please consider a star!
 
-## ❤️ Rate Us & Explore More
-
-If you enjoy using Trans-In-Side, please consider rating us! The extension features a pure-CSS interactive star rating in the side panel footer. 
-
-Explore more of our side panel extensions by clicking the **Explore All** link within the extension.
 
 ---
 Created with ♥ by [**M Ramzan Ch**](https://github.com/MegaMind-Solution/Trans-In-Side)
