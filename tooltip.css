@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic&family=Mukta:wght@400;500&family=Noto+Sans:wght@400;500&display=swap');
+
+#trans-tooltip {
+    position: absolute;
+    z-index: 2147483647;
+    color: #fff;
+    font-family: system-ui;
+    font-size: 13px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 15px -3px;
+    pointer-events: none;
+    opacity: 0;
+    background: rgb(30 43 64);
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: opacity 0.2s;
+}
+
+#trans-tooltip.show {
+    opacity: 1;
+}
+
+.font-arabic {
+    font-family: 'Noto Naskh Arabic', sans-serif;
+    direction: rtl;
+}
+
+.font-hindi {
+    font-family: 'Mukta', sans-serif;
+}
+
+.font-latin {
+    font-family: 'Noto Sans', sans-serif;
+}
