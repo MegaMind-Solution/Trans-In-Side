@@ -2,6 +2,7 @@
   "manifest_version": 3,
   "name": "Translate In Sidepanel",
   "short_name": "Trans In Side",
+  "description": "Bring the power of Google, Bing and Deepl Translators directly into browser's side panel",
   "version": "8.4",
   "version_name": "V8.4",
   "author": "M Ramzan Ch",
