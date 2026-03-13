@@ -17,12 +17,23 @@
                 </svg>
                 Translator V7
             </div>
-            <label class="theme-switch" title="Toggle Dark Mode">
-                <input type="checkbox" id="themeToggle" />
-                <span class="slider"></span>
-            </label>
         </div>
-
+        <div class="settings-maingr">
+            <div class="settings-group">
+                <span style="width: 80px;">Enable Quick Tooltip</span>
+                <label class="toggle-switch" title="Enable Quick Tooltip">
+                    <input type="checkbox" id="tooltipToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="settings-group">
+                <span style="width: 80px;">Chnage Theme</span>
+                <label class="toggle-switch" title="Chnage Theme">
+                    <input type="checkbox" id="themeToggle" />
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
         <div class="translation-card">
             <div class="form-group"
                 style="margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed var(--border);">
@@ -42,7 +53,8 @@
                     <div title="Detect Automaticly" class="select-button" data-val="auto">Detect Language<span
                             style="font-size: 10px; color: var(--text-muted)">▼</span></div>
                     <div class="select-dropdown">
-                        <input title="Type Here To Search" type="text" class="search-box" placeholder="Search language..." />
+                        <input title="Type Here To Search" type="text" class="search-box"
+                            placeholder="Search language..." />
                         <ul class="options-list"></ul>
                     </div>
                 </div>
@@ -62,7 +74,8 @@
                     <div title="English" class="select-button" data-val="en">English <span
                             style="font-size: 10px; color: var(--text-muted)">▼</span></div>
                     <div class="select-dropdown alt">
-                        <input title="Type Here To Search" type="text" class="search-box alt" placeholder="Search language..." />
+                        <input title="Type Here To Search" type="text" class="search-box alt"
+                            placeholder="Search language..." />
                         <ul class="options-list"></ul>
                     </div>
                 </div>

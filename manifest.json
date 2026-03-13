@@ -2,8 +2,8 @@
   "manifest_version": 3,
   "name": "Translate In Sidepanel",
   "short_name": "Trans In Side",
-  "version": "7.0",
-  "version_name": "V7.O",
+  "version": "8.4",
+  "version_name": "V8.4",
   "author": "M Ramzan Ch",
   "description": "",
   "minimum_chrome_version": "130",
@@ -60,6 +60,11 @@
       "all_frames": true,
       "js": ["content.js"],
       "css": ["content.css"]
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content_bridge.js"],
+      "css": ["tooltip.css"]
     }
   ],
   "declarative_net_request": {
