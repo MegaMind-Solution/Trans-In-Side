@@ -55,3 +55,16 @@ chrome.commands.onCommand.addListener((command) => {
         });
     }
 });
+
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === 'translateWord') {
+        const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${request.lang}&dt=t&q=${encodeURIComponent(request.text)}`;
+
+        fetch(url)
+            .then(res => res.json())
+            .then(data => sendResponse(data[0][0][0]))
+            .catch(() => sendResponse("Translation error"));
+        return true;
+    }
+});
