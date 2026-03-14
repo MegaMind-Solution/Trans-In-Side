@@ -17,6 +17,7 @@
     "256": "./src/icon.png"
   },
   "action": {
+    "default_popup" : "./option.html",
     "default_title": "StartPage",
     "default_icon": {
       "16": "./src/16.png",
