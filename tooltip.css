@@ -1,15 +1,28 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic&family=Mukta:wght@400;500&family=Noto+Sans:wght@400;500&display=swap');
+@font-face {
+    font-family: 'Noto Nastaliq Urdu';
+    src: url(https://cdn.jsdelivr.net/fontsource/fonts/noto-nastaliq-urdu@latest/arabic-400-normal.woff2) format('woff2');
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Noto Sans Devanagari';
+    src: url(https://cdn.jsdelivr.net/fontsource/fonts/noto-sans-devanagari@latest/devanagari-400-normal.woff2) format('woff2');
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Noto Sans';
+    src: url(https://cdn.jsdelivr.net/fontsource/fonts/noto-sans@latest/latin-400-normal.woff2) format('woff2');
+    font-display: swap;
+}
 
 #trans-tooltip {
     position: absolute;
     z-index: 2147483647;
     color: #fff;
-    font-family: system-ui;
     font-size: 13px;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 15px -3px;
     pointer-events: none;
     opacity: 0;
-    background: rgb(30 43 64);
+    background: rgb(30, 43, 64);
     padding: 8px 12px;
     border-radius: 8px;
     transition: opacity 0.2s;
@@ -20,14 +33,14 @@
 }
 
 .font-arabic {
-    font-family: 'Noto Naskh Arabic', sans-serif;
+    font-family: 'Noto Nastaliq Urdu', sans-serif !important;
     direction: rtl;
 }
 
 .font-hindi {
-    font-family: 'Mukta', sans-serif;
+    font-family: 'Noto Sans Devanagari', sans-serif !important;
 }
 
 .font-latin {
-    font-family: 'Noto Sans', sans-serif;
+    font-family: 'Noto Sans', sans-serif !important;
 }
