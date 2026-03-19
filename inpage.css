@@ -1,0 +1,258 @@
+@font-face {
+    font-family: 'Noto Nastaliq Urdu';
+    src: url(https://cdn.jsdelivr.net/fontsource/fonts/noto-nastaliq-urdu@latest/arabic-400-normal.woff2) format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Noto Sans Devanagari';
+    src: url(https://cdn.jsdelivr.net/fontsource/fonts/noto-sans-devanagari@latest/devanagari-400-normal.woff2) format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Noto Sans';
+    src: url(https://cdn.jsdelivr.net/fontsource/fonts/noto-sans@latest/latin-400-normal.woff2) format('woff2');
+    font-display: swap;
+}
+
+:root {
+    --bg-app: #0f172a;
+    --bg-card: #1e293b;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --border: #334155;
+    --primary: #6366f1;
+    --primary-hover: #818cf8;
+    --input-bg: #0f172a;
+    --hover-bg: #312e81;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, .5);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, .4);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, .5);
+}
+
+#trans-tooltip {
+    position: absolute;
+    z-index: 2147483647;
+    color: var(--text-main);
+    font-size: 13px;
+    box-shadow: var(--shadow-sm);
+    pointer-events: none;
+    opacity: 0;
+    background: var(--bg-card);
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: opacity .2s ease-in-out;
+}
+
+#trans-tooltip.show {
+    opacity: 1;
+}
+
+.font-arabic {
+    font-family: 'Noto Nastaliq Urdu', sans-serif !important;
+    direction: rtl;
+}
+
+.font-hindi {
+    font-family: 'Noto Sans Devanagari', sans-serif !important;
+}
+
+.font-latin {
+    font-family: 'Noto Sans', sans-serif !important;
+}
+
+#trans-selection-icon {
+    position: absolute;
+    z-index: 2147483646;
+    background: var(--primary);
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, .2);
+    transition: transform .2s;
+}
+
+#trans-selection-icon:hover {
+    transform: scale(1.1);
+    background: var(--primary-hover);
+}
+
+#trans-inline-popup {
+    position: absolute;
+    z-index: 2147483647;
+    width: 360px;
+    background: var(--bg-card);
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .15);
+    border: 1px solid var(--primary);
+    display: flex;
+    flex-direction: column;
+    font-family: 'Inter', 'Noto Sans', sans-serif;
+}
+
+.trans-inline-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-card);
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    border-radius: 12px 12px 0 0;
+    position: relative;
+}
+
+.trans-custom-select {
+    position: relative;
+    flex: 1;
+    max-width: 140px;
+}
+
+.trans-select-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 12px;
+    color: var(--text-main);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    user-select: none;
+}
+
+.trans-select-btn:hover,
+.trans-custom-select.active .trans-select-btn {
+    border-color: var(--primary);
+}
+
+.trans-select-btn span {
+    font-size: 8px;
+    color: var(--border);
+    margin-left: 6px;
+}
+
+.trans-select-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    width: 160px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+    z-index: 2147483648;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.trans-custom-select.active .trans-select-dropdown {
+    display: flex;
+}
+
+.trans-search-box {
+    padding: 8px;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 12px;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.trans-options-list {
+    max-height: 150px;
+    overflow-y: auto;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.trans-options-list li {
+    padding: 8px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--text-main);
+    transition: background .1s;
+}
+
+.trans-options-list li:hover {
+    background: var(--hover-bg);
+    color: var(--primary-hover);
+}
+
+.trans-inline-swap {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--primary);
+    padding: 4px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .2s;
+}
+
+.trans-inline-swap:hover {
+    transform: scale(1.1) rotate(180deg);
+    background: var(--primary-hover);
+    border-radius: 50%;
+}
+
+.trans-inline-swap svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
+
+.trans-inline-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.trans-inline-textarea {
+    width: 100%;
+    height: 90px;
+    padding: 12px;
+    border: none;
+    font-size: 13px;
+    color: var(--text-main);
+    resize: vertical;
+    outline: none;
+    box-sizing: border-box;
+    font-family: inherit;
+    line-height: 1.4;
+}
+
+#trans-inline-source {
+    background: var(--bg-app);
+    border-bottom: 1px dashed var(--text-main);
+}
+
+#trans-inline-target {
+    background: var(--bg-card);
+    color: var(--text-main);
+    border-radius: 0 0 12px 12px;
+}
+
+.trans-inline-textarea::-webkit-scrollbar,
+.trans-options-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.trans-inline-textarea::-webkit-scrollbar-thumb,
+.trans-options-list::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 10px;
+}
