@@ -68,8 +68,8 @@
 
     {
       "matches": ["<all_urls>"],
-      "js": ["content_bridge.js"],
-      "css": ["tooltip.css"]
+      "js": ["inpage.js"],
+      "css": ["inpage.css"]
     }
   ],
   "web_accessible_resources": [
