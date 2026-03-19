@@ -48,20 +48,37 @@ chrome.commands.onCommand.addListener((command) => {
                     if (text) {
                         chrome.storage.local.set({ lastQuery: { text: text, ts: Date.now() } });
                     }
-                }).catch(err => {
-                });
+                }).catch(err => { });
             });
         });
     }
 });
 
+// chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+//     if (request.action === 'translateWord') {
+//         const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${request.lang}&dt=t&q=${encodeURIComponent(request.text)}`;
+//         fetch(url)
+//             .then(res => res.json())
+//             .then(data => sendResponse(data[0][0][0]))
+//             .catch(() => sendResponse("Translation error"));
+//         return true;
+//     }
+// });
+
+// UPDATED: Now supports full paragraphs and source language selection
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'translateWord') {
-        const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${request.lang}&dt=t&q=${encodeURIComponent(request.text)}`;
+        const sl = request.srcLang || 'auto';
+        const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sl}&tl=${request.lang}&dt=t&q=${encodeURIComponent(request.text)}`;
+        
         fetch(url)
             .then(res => res.json())
-            .then(data => sendResponse(data[0][0][0]))
+            .then(data => {
+                // Combine all translated sentences (Google splits them into an array)
+                const translatedText = data[0].map(item => item[0]).join('');
+                sendResponse(translatedText);
+            })
             .catch(() => sendResponse("Translation error"));
-        return true;
+        return true; 
     }
 });
