@@ -113,7 +113,7 @@ function showTooltip(x, y, text, lang) {
 let selectionIcon = null;
 let inlinePopup = null;
 let translateDebounce = null;
-let ignoreNextMouseUp = false; 
+let ignoreNextMouseUp = false;
 
 document.addEventListener('click', (e) => {
     if (!e.target.closest('.trans-custom-select')) {
@@ -202,35 +202,28 @@ async function openInlinePopup(text, rect) {
     inlinePopup = document.createElement("div");
     inlinePopup.id = "trans-inline-popup";
 
-    let srcOptions = `<li data-val="auto">Detect Language</li>`;
-    let tgtOptions = "";
-    languages.forEach(lang => {
-        srcOptions += `<li data-val="${lang.code}">${lang.name}</li>`;
-        tgtOptions += `<li data-val="${lang.code}">${lang.name}</li>`;
-    });
-
     inlinePopup.innerHTML = `
         <div class="trans-inline-header">
             <div class="trans-custom-select" id="trans-inline-src">
-                <div class="trans-select-btn" data-val="${sl}">${getLangName(sl)} <span>▼</span></div>
+                <div class="trans-select-btn"></div>
                 <div class="trans-select-dropdown">
                     <input type="text" class="trans-search-box" placeholder="Search language...">
-                    <ul class="trans-options-list">${srcOptions}</ul>
+                    <ul class="trans-options-list"></ul>
                 </div>
             </div>
             
             <button class="trans-inline-swap" id="trans-inline-swap" title="Swap Languages">⇆</button>
             
             <div class="trans-custom-select" id="trans-inline-tgt">
-                <div class="trans-select-btn" data-val="${tl}">${getLangName(tl)} <span>▼</span></div>
+                <div class="trans-select-btn"></div>
                 <div class="trans-select-dropdown alt">
                     <input type="text" class="trans-search-box" placeholder="Search language...">
-                    <ul class="trans-options-list">${tgtOptions}</ul>
+                    <ul class="trans-options-list"></ul>
                 </div>
             </div>
         </div>
         <div class="trans-inline-body">
-            <textarea id="trans-inline-source" class="trans-inline-textarea">${text}</textarea>
+            <textarea id="trans-inline-source" class="trans-inline-textarea"></textarea>
             <textarea id="trans-inline-target" class="trans-inline-textarea" readonly></textarea>
         </div>
         <div class="trans-inline-footer">
@@ -251,6 +244,43 @@ async function openInlinePopup(text, rect) {
 
     document.body.appendChild(inlinePopup);
 
+    const srcBtn = inlinePopup.querySelector("#trans-inline-src .trans-select-btn");
+    const tgtBtn = inlinePopup.querySelector("#trans-inline-tgt .trans-select-btn");
+    const swapBtn = inlinePopup.querySelector("#trans-inline-swap");
+    const sourceText = inlinePopup.querySelector("#trans-inline-source");
+    const targetText = inlinePopup.querySelector("#trans-inline-target");
+    const copyBtn = inlinePopup.querySelector("#trans-inline-copy");
+    const searchSelect = inlinePopup.querySelector("#trans-inline-search");
+
+    const setupBtn = (btn, val) => {
+        btn.setAttribute('data-val', val);
+        btn.textContent = getLangName(val) + ' ';
+        const span = document.createElement('span');
+        span.textContent = '▼';
+        btn.appendChild(span);
+    };
+
+    setupBtn(srcBtn, sl);
+    setupBtn(tgtBtn, tl);
+
+    const srcList = inlinePopup.querySelector('#trans-inline-src .trans-options-list');
+    const tgtList = inlinePopup.querySelector('#trans-inline-tgt .trans-options-list');
+
+    const createLi = (code, name) => {
+        const li = document.createElement('li');
+        li.setAttribute('data-val', code);
+        li.textContent = name;
+        return li;
+    };
+
+    srcList.appendChild(createLi('auto', 'Detect Language'));
+    languages.forEach(lang => {
+        srcList.appendChild(createLi(lang.code, lang.name));
+        tgtList.appendChild(createLi(lang.code, lang.name));
+    });
+
+    sourceText.value = text;
+
     const scrollX = window.scrollX;
     const scrollY = window.scrollY;
 
@@ -268,29 +298,37 @@ async function openInlinePopup(text, rect) {
     inlinePopup.style.top = topPos + "px";
     inlinePopup.style.left = leftPos + "px";
 
-    const srcBtn = inlinePopup.querySelector("#trans-inline-src .trans-select-btn");
-    const tgtBtn = inlinePopup.querySelector("#trans-inline-tgt .trans-select-btn");
-    const swapBtn = inlinePopup.querySelector("#trans-inline-swap");
-    const sourceText = inlinePopup.querySelector("#trans-inline-source");
-    const targetText = inlinePopup.querySelector("#trans-inline-target");
-    const copyBtn = inlinePopup.querySelector("#trans-inline-copy");
-    const searchSelect = inlinePopup.querySelector("#trans-inline-search");
-
+    let isCopied = false;
     copyBtn.addEventListener("click", () => {
         const textToCopy = targetText.value;
-        if (!textToCopy || textToCopy === "Translating...") return;
+        if (!textToCopy || textToCopy === "Translating..." || isCopied) return;
 
         navigator.clipboard.writeText(textToCopy).then(() => {
-            const originalHTML = copyBtn.innerHTML;
-            copyBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Copied!`;
-            setTimeout(() => { copyBtn.innerHTML = originalHTML; }, 1500);
+            isCopied = true;
+            const originalChildren = Array.from(copyBtn.childNodes);
+            copyBtn.replaceChildren();
+
+            const svgNS = "http://www.w3.org/2000/svg";
+            const svg = document.createElementNS(svgNS, "svg");
+            svg.setAttribute("viewBox", "0 0 24 24");
+            const path = document.createElementNS(svgNS, "path");
+            path.setAttribute("d", "M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z");
+            svg.appendChild(path);
+
+            copyBtn.appendChild(svg);
+            copyBtn.appendChild(document.createTextNode(" Copied!"));
+
+            setTimeout(() => {
+                copyBtn.replaceChildren(...originalChildren);
+                isCopied = false;
+            }, 1500);
         });
     });
 
     searchSelect.addEventListener("change", (e) => {
         const textToSearch = targetText.value;
         if (!e.target.value || !textToSearch || textToSearch === "Translating...") {
-            e.target.selectedIndex = 0; 
+            e.target.selectedIndex = 0;
             return;
         }
 
@@ -351,7 +389,10 @@ async function openInlinePopup(text, rect) {
         list.onclick = (e) => {
             if (e.target.tagName === 'LI') {
                 const val = e.target.getAttribute('data-val');
-                btn.innerHTML = `${e.target.textContent} <span>▼</span>`;
+                btn.textContent = `${e.target.textContent} `;
+                const span = document.createElement('span');
+                span.textContent = '▼';
+                btn.appendChild(span);
                 btn.setAttribute('data-val', val);
                 container.classList.remove('active');
                 doTranslate();
@@ -375,9 +416,16 @@ async function openInlinePopup(text, rect) {
         const srcTextStr = srcBtn.textContent.replace("▼", "").trim();
         const tgtTextStr = tgtBtn.textContent.replace("▼", "").trim();
 
-        srcBtn.innerHTML = `${tgtTextStr} <span>▼</span>`;
+        srcBtn.textContent = `${tgtTextStr} `;
+        const span1 = document.createElement('span');
+        span1.textContent = '▼';
+        srcBtn.appendChild(span1);
         srcBtn.setAttribute('data-val', tgtVal);
-        tgtBtn.innerHTML = `${srcTextStr} <span>▼</span>`;
+
+        tgtBtn.textContent = `${srcTextStr} `;
+        const span2 = document.createElement('span');
+        span2.textContent = '▼';
+        tgtBtn.appendChild(span2);
         tgtBtn.setAttribute('data-val', srcVal);
 
         const tempText = sourceText.value;

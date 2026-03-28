@@ -302,7 +302,7 @@ input:checked+.slider:before {
 
 .options-list li:hover {
     background: var(--hover-bg);
-    color: var(--primary);
+    color: var(--primary-hover);
 }
 
 .status-footer {

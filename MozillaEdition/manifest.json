@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Translate in Sidepanel",
   "short_name": "Trans In Side",
-  "version": "9.5",
+  "version": "10.9",
   "author": "M Ramzan Ch",
   "homepage_url": "https://github.com/MegaMind-Solution",
   "description": "Seamless multi-language translation directly in your browser's side panel.",
@@ -84,8 +84,8 @@
     },
     {
       "matches": ["<all_urls>"],
-      "js": ["content_bridge.js"],
-      "css": ["tooltip.css"]
+      "js": ["inpage.js"],
+      "css": ["inpage.css"]
     }
   ],
   "declarative_net_request": {
